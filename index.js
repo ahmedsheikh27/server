@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose")
-const cors = require("cors")
-
-const UserModel = require("./models/User")
-app.use(express.json())
+const mongoose = require("mongoose");
+const cors = require("cors");
+const dotenv = require('dotenv');
+dotenv.config();
+const UserModel = require("./models/User");
+app.use(express.json());
 app.use(cors({origin: true, credentials: true}));
 
 mongoose.connect("mongodb://localhost:27017")
+console.log(process.env.MANGO)
 
 app.post("/createUser", async (req, res) => {
     const user = req.body;
@@ -54,7 +56,7 @@ app.delete("/deleteUser/:id", async (req, res) => {
 })
 
 
-const PORT = "8000"
+const PORT = process.env.PORT || 8000
 app.listen(PORT, () => {
     console.log(`Server is running perfectly on port ${PORT}`)
 })
