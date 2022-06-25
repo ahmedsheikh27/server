@@ -8,23 +8,22 @@ const UserModel = require("./models/User");
 app.use(express.json());
 app.use(cors({origin: true, credentials: true}));
 
-mongoose.connect("mongodb://localhost:27017")
-console.log(process.env.MANGO)
+mongoose.connect(process.env.MANGO)
 
 app.post("/createUser", async (req, res) => {
     const user = req.body;
     const newUser = new UserModel(user);
     await newUser.save()
-
     res.json(user)
 })
 
-app.get("/getusers", (request, response) => {
+app.get("/getusers", (req, res) => {
+    console.log("inside")
     UserModel.find({}, (err, result) => {
         if (!err) {
-            response.json(result)
+            res.json(result)
         } else {
-            response.json(err)
+            res.json(err)
         }
     })
 })
@@ -55,9 +54,7 @@ app.delete("/deleteUser/:id", async (req, res) => {
     res.send("User has been successfully deleted from DB")
 })
 
-
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 4000
 app.listen(PORT, () => {
     console.log(`Server is running perfectly on port ${PORT}`)
 })
-// Code is push on githb
